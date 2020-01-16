@@ -13,7 +13,7 @@
 #include <string.h>
 #include <malloc.h>
 
-#if 1
+#if 0
 //正确
 char* fun(char* arr, int len, int L,int * strsum)
 {
@@ -365,7 +365,7 @@ int main()
 }
 
 #endif
-#if 0
+#if 1
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -386,11 +386,12 @@ void fun(int L, int len, char* s, char arr[1000][1000])
             //arr[zi][0] = 1;
             //if (cur + L - 1 == '\0')break;
             int j = 0;
-            for (j = 1; j < L + 1; j++)
+            /*for (j = 1; j < L + 1; j++)
             {
                 arr[zi][j] = *cur;
                 cur++;
-            }
+            }*/
+            strncpy(&arr[zi][1], cur, L);
             //arr[zi][j] = '\0';
             int m = fenge;
             //将分割的每一块与它长度相同的前面的数组值进行比较

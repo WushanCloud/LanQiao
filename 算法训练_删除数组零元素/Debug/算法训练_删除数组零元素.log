@@ -1,0 +1,5 @@
+﻿  源.cpp
+D:\Git\LanQiao\算法训练_删除数组零元素\源.cpp(52,13): error C2131: 表达式的计算结果不是常数
+D:\Git\LanQiao\算法训练_删除数组零元素\源.cpp(52,13): message : 因读取超过生命周期的变量而失败
+D:\Git\LanQiao\算法训练_删除数组零元素\源.cpp(52,13): message : 请参见“arrSize”的用法
+D:\Git\LanQiao\算法训练_删除数组零元素\源.cpp(55,7): warning C4552: ”>>“: 未使用表达式结果
