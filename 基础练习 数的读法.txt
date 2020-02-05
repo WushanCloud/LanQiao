@@ -1,0 +1,159 @@
+问题描述
+　　Tom教授正在给研究生讲授一门关于基因的课程，有一件事情让他颇为头疼：一条染色体上有成千上万个碱基对，它们从0开始编号，到几百万，几千万，甚至上亿。
+　　比如说，在对学生讲解第1234567009号位置上的碱基时，光看着数字是很难准确的念出来的。
+　　所以，他迫切地需要一个系统，然后当他输入12 3456 7009时，会给出相应的念法：
+　　十二亿三千四百五十六万七千零九
+　　用汉语拼音表示为
+　　shi er yi san qian si bai wu shi liu wan qi qian ling jiu
+　　这样他只需要照着念就可以了。
+　　你的任务是帮他设计这样一个系统：给定一个阿拉伯数字串，你帮他按照中文读写的规范转为汉语拼音字串，相邻的两个音节用一个空格符格开。
+　　注意必须严格按照规范，比如说“10010”读作“yi wan ling yi shi”而不是“yi wan ling shi”，“100000”读作“shi wan”而不是“yi shi wan”，“2000”读作“er qian”而不是“liang qian”。
+输入格式
+　　有一个数字串，数值大小不超过2,000,000,000。
+输出格式
+　　是一个由小写英文字母，逗号和空格组成的字符串，表示该数的英文读法。
+样例输入
+1234567009
+样例输出
+shi er yi san qian si bai wu shi liu wan qi qian ling jiu
+
+#include <iostream>
+#include <string.h>
+using namespace std;
+
+
+char nums[][5] = { "ling","yi","er","san","si","wu","liu" ,"qi" ,"ba" ,"jiu" };
+char numswei[][5] = { "", "shi","bai","qian" };
+char numsName[][5] = {"wan" ,"yi" };
+//求数字的位数
+int lenth(int  num)
+{
+	if (num == 0) return 1;
+	int sum = 0;
+	while (num)
+	{
+		num /= 10;
+		sum++;
+	}
+	return sum;
+}
+//把int 存入int[]里
+void fun(int num,int *arr,int len)
+{
+	while (len--)
+	{
+		arr[len] = num % 10;
+		num /= 10;
+	}
+}
+//4位转换函数
+int changeNum(int *arr,char (*answ)[5],int start,int end, int tip)
+{
+	int wei = end - start;
+	int j = 0;
+	if (start > 0 && tip < 2) strcpy(answ[j++], numsName[tip]);
+	if(start > 0 && arr[start] == 0) strcpy(answ[j++], nums[0]);
+	while (arr[start] == 0 && start <= end)
+	{
+		start++;
+		wei--;
+	}
+	for (int i = start; i <= end; i++)
+	{
+		if (arr[i] == 0 && strcmp(answ[j - 1], nums[0]) == 0)
+		{
+			wei--;
+			continue;
+		}
+		strcpy(answ[j++], nums[arr[i]]);
+		if (strcmp(answ[j - 1], nums[0]) != 0)
+			strcpy(answ[j++], numswei[wei]);
+		wei--;
+	}
+	j--;
+	if (strcmp(answ[j - 1], nums[0]) == 0)
+	{
+		strcpy(answ[j--], "");
+	}
+	for (int k = 0; k < j; k++)
+	{
+		if (strcmp(answ[k], "shi") == 0)
+		{
+			if (strcmp(answ[k - 1], "yi") == 0)
+			{
+				for (int t = k - 1; t < j; t++)
+				{
+					strcpy(answ[t], answ[t + 1]);
+				}
+				j--;
+			}
+		}
+	}
+	return j;
+}
+void zuhe(int& count, char(*answ)[5], char(*answer)[5],int j)
+{
+	int i = 0;
+	while (i<j)
+	{
+		strcpy(answer[count++], answ[i++]);
+		strcpy(answer[count++], " ");
+	}
+}
+int main()
+{
+	int num = 0;
+	cin >> num;
+	if (num == 0) cout << "ling";
+	//数字的长度
+	int len = lenth(num);
+	//数字
+	int numarr[10] = { 0 };
+	fun(num, numarr,len);
+	//每个阶层的转换结果
+	char answ1[10][5] = { "" };
+	char answ2[10][5] = { "" };
+	char answ3[10][5] = { "" };
+	//转换后的读法
+	char answer[20][5] = { "" };
+
+	//从低位到高位，每4位为一个单位进行转换
+	int start = 0, end = 0;
+	int j1 = 0, j2 = 0, j3 = 0;
+	//1. 转化低4位
+	end = len - 1;
+	if (len > 4)
+		start = end - 3;
+	else
+		start = 0;
+	j1 = changeNum(numarr, answ1, start, end,0);
+	//2. 转化中间4位
+	if (len > 4)
+	{
+		end = start - 1;
+		if (len > 4+4)
+			start = end - 3;
+		else
+			start = 0;
+		j2 = changeNum(numarr, answ2, start, end,1);
+	}
+
+	//3. 转化高2位
+	if (len > 8)
+	{
+		end = start - 1;
+		start = 0;
+		j3 = changeNum(numarr, answ3, start, end,2);
+	}
+
+	//4. 转化的三个数组进行组合
+	int count = 0;
+	zuhe(count, answ3, answer, j3);
+	zuhe(count, answ2, answer, j2);
+	zuhe(count, answ1, answer, j1);
+	//输出
+	for (int k = 0; k < count-1; k++)
+		cout << answer[k];
+	return 0;
+}
+
