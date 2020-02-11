@@ -1,0 +1,53 @@
+//问题描述
+//小明来到一个景区游玩，但是他的时间有限，没办法逛遍所有的景点，所以他从网上下载了每个景点的评分，他希望能够使游览的景点的评分总和最高，于是他希望你帮他对于N个景点排下序。
+//输入格式
+//输入的第一行包含一个正整数N，表示N个景点。
+//第二行有N个正整数，表示每个景点的评分值。
+//输出格式
+//输出一行，包含N个正整数，表示N个景点的评分从大到小的排列
+
+#include <iostream>
+using namespace std;
+void quickSort(int *arr,int begin,int end)
+{
+	if (begin >= end) return;
+	int mid = begin;
+	int left = begin + 1, right = end;
+
+	while (left < right)
+	{
+		while (left < right && arr[left] >= arr[mid])
+		{
+			left++;
+		}
+		while (left < right && arr[right] < arr[mid])
+		{
+			right--;
+		}
+		swap(arr[left], arr[right]);
+	}
+	if (arr[left] > arr[mid])
+	{
+		swap(arr[left], arr[mid]);
+	}
+	quickSort(arr, begin, left-1);
+	quickSort(arr, left, end);
+}
+int main()
+{
+	int n = 0;
+	cin >> n;
+	int *arr = new int[n];
+	for (int i = 0; i < n; i++)
+	{
+		cin >> arr[i];
+	}
+	quickSort(arr,0, n-1);
+
+	for (int i = 0; i < n; i++)
+	{
+		cout << arr[i] << " ";
+	}
+	delete[] arr;
+	return 0;
+}
