@@ -1,0 +1,163 @@
+问题描述
+　　给定一个n*n的棋盘，棋盘中有一些位置不能放皇后。现在要向棋盘中放入n个黑皇后和n个白皇后，使任意的两个黑皇后都不在同一行、同一列或同一条对角线上，任意的两个白皇后都不在同一行、同一列或同一条对角线上。问总共有多少种放法？n小于等于8。
+输入格式
+　　输入的第一行为一个整数n，表示棋盘的大小。
+　　接下来n行，每行n个0或1的整数，如果一个整数为1，表示对应的位置可以放皇后，如果一个整数为0，表示对应的位置不可以放皇后。
+输出格式
+　　输出一个整数，表示总共有多少种放法。
+样例输入
+4
+1 1 1 1
+1 1 1 1
+1 1 1 1
+1 1 1 1
+样例输出
+2
+样例输入
+4
+1 0 1 1
+1 1 1 1
+1 1 1 1
+1 1 1 1
+样例输出
+0
+#include <iostream>
+using namespace std;
+
+int sum = 0;
+
+void input(int arr[][8],int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			cin >> arr[i][j];
+		}
+	}
+}
+void output(int arr[][8], int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			cout << arr[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
+//k：当前行 j:当前列
+int panduan1(int(*brr)[8], int k, int j,int n)
+{
+	//判断其正上方
+	for (int i = 0; i < k; i++)
+	{
+		if (brr[i][j] == 2)
+			return 0;
+	}
+	//判断左上正对角线
+	for (int i = 1; (k - i) >= 0 && (j - i) >= 0; i++)//行
+	{
+		if (brr[k - i][j - i] == 2)
+		{
+			return 0;
+		}
+	}
+	//判断右上对象线
+	for (int i = 1; (k - i) >= 0 && (j + i) < n; i++)
+	{
+		if (brr[k - i][j + i] == 2)
+		{
+			return 0;
+		}
+	}
+	return 1;
+}
+int panduan2(int(*brr)[8], int k, int j, int n)
+{
+	//判断其正上方
+	for (int i = 0; i < k; i++)
+	{
+		if ( brr[i][j] == 3)
+			return 0;
+	}
+	//判断左上正对角线
+	for (int i = 1; (k - i) >= 0 && (j - i) >= 0; i++)//行
+	{
+		if (  brr[k - i][j - i] == 3)
+		{
+			return 0;
+		}
+	}
+	//判断右上对象线
+	for (int i = 1; (k - i) >= 0 && (j + i) < n; i++)
+	{
+		if ( brr[k - i][j + i] == 3)
+		{
+			return 0;
+		}
+	}
+	return 1;
+}
+
+//n:最大行数 i: 当前行数
+void eight2(int arr[][8], int n, int i)
+{
+	if (i == n)
+	{
+		sum++;
+		output(arr, n);
+	}
+	else
+	{
+		for (int j = 0; j < n; j++)//列
+		{
+			if (arr[i][j] == 0 || arr[i][j] == 2) continue;
+			arr[i][j] = 3;
+			if (panduan2(arr, i, j, n) == 1)
+			{
+				//当前行插入正确，进入下一行
+				eight2(arr, n, i + 1);
+			}
+			arr[i][j] = 1;
+		}
+	}
+}
+
+//n:最大行数 i: 当前行数
+void eight1(int arr[][8], int n, int i)
+{
+	if (i == n)
+	{
+		eight2(arr,n,0);
+	}
+	else
+	{
+		for (int j = 0; j < n; j++)//列
+		{
+			if (arr[i][j] == 0) continue;
+			arr[i][j] = 2;
+			if (panduan1(arr, i, j,n) == 1)
+			{
+				//当前行插入正确，进入下一行
+				eight1(arr,n, i + 1);
+			}
+			arr[i][j] = 1;
+		}
+	}
+}
+
+int main()
+{
+	int arr[8][8] = { 0 };
+	int n = 0;
+	cin >> n;
+	input(arr, n);
+	eight1(arr, n, 0);
+	cout << sum;
+	return 0;
+}
+
+
+
