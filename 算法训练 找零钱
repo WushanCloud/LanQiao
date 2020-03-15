@@ -1,0 +1,106 @@
+#if 1
+
+//问题描述
+//有n个人正在饭堂排队买海北鸡饭。每份海北鸡饭要25元。奇怪的是，每个人手里只有一张钞票（每张钞票的面值为25、50、100元），而且饭堂阿姨一开始没有任何零钱。请问饭堂阿姨能否给所有人找零（假设饭堂阿姨足够聪明）
+//输入格式
+//第一行一个整数n，表示排队的人数。
+//
+//接下来n个整数a[1], a[2], ..., a[n]。a[i]表示第i位学生手里钞票的价值（i越小，在队伍里越靠前）
+//输出格式
+//输出YES或者NO
+//样例输入
+//4
+//25 25 50 50
+//样例输出
+//YES
+//样例输入
+//2
+//25 100
+//样例输出
+//NO
+//样例输入
+//4
+//25 25 50 100
+//样例输出
+//YES
+//数据规模和约定
+//n不超过1000000
+
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+void test()
+{
+	int n = 0;//客人总数
+	cin >> n;
+	vector<int> kr(n);//客人手里钱数
+	for (vector<int>::iterator i = kr.begin(); i != kr.end(); i++)
+	{
+		cin >> *i;
+	}
+	sort(kr.begin(), kr.end());
+
+	int* ay = new int[3];//阿姨手里的钱 25 50 100
+	ay[0] = ay[1] = ay[2] = 0;
+
+	vector<int>::iterator now = kr.begin();
+	while (kr.size() != 0)
+	{
+		if (*now == 25)
+		{
+			ay[0]++;//阿姨手里25的加1
+			kr.erase(now);//删除当前客户
+		}
+		else if (*now == 50)
+		{
+			ay[1]++;
+			if (ay[0] > 0)
+			{
+				ay[0]--;
+				kr.erase(now);
+			}
+			else
+			{
+				cout << "NO";
+				exit(0);
+			}
+		}
+		else if (*now == 100)
+		{
+			ay[2]++;
+			if (ay[1] > 0)
+			{
+				ay[1]--;
+				*now -= 50;
+			}
+			while (ay[0] > 0 && *now != 25)
+			{
+				ay[0]--;
+				*now -= 25;
+			}
+			if (*now == 25)
+			{
+				kr.erase(now);
+			}
+			else
+			{
+				cout << "NO";
+				exit(0);
+			}
+		}
+	}
+	cout << "YES";
+}
+
+int main()
+{
+	test();
+	return 0;
+}
+
+
+
+#endif // 1
