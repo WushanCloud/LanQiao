@@ -1,0 +1,72 @@
+#if 0
+//男孩成人后身高 = （父亲身高 + 母亲身高） / 2 * 1.08
+//女孩成人后身高 = (父亲身高 * 0.923 + 母亲身高） / 2
+//	输入格式
+//	用空格分开的三个数，整数 小数 小数
+//	分别表示：性别 父亲身高 母亲身高
+//	输出格式
+//	一个小数，表示根据上述表示预测的身高（保留三位小数）
+//	样例输入
+//	1 1.91 1.70
+//	样例输出
+//	1.949
+//	样例输入
+//	0 1.00 2.077
+//	样例输出
+//	1.500
+
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+	int n = 0;
+	cin >> n;
+	double a, b;
+	cin >> a >> b;
+	cout << fixed << setprecision(3);
+	if (n == 0)
+	{
+		cout << (a * 0.923 + b) / 2;
+	}
+	else
+	{
+		cout << (a + b) / 2 * 1.08;
+	}
+
+	return 0;
+}
+
+
+#endif // 1
+#if 0
+
+#include <iostream>
+
+#include <iomanip>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	int x;
+	cin >> x;
+	float f; float m;
+	cin >> f >> m;
+	cout << fixed << setprecision(3);
+	if (x == 1)
+	{
+		cout << (f + m) / 2 * 1.08;
+	}
+	else
+	{
+		cout << (f * 0.923 + m) / 2;
+	}
+	return 0;
+}
+
+#endif // 1
