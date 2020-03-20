@@ -1,0 +1,107 @@
+#if 1
+
+//问题描述
+//有n辆自行车依次来到停车棚，除了第一辆自行车外，每辆自行车都会恰好停放在已经在停车棚里的某辆自行车的左边或右边。(e.g.停车棚里已经有3辆自行车，从左到右编号为：3, 5, 1。现在编号为2的第4辆自行车要停在5号自行车的左边，所以现在停车棚里的自行车编号是：3, 2, 5, 1)。给定n辆自行车的停放情况，按顺序输出最后停车棚里的自行车编号。
+//输入格式
+//第一行一个整数n。
+//第二行一个整数x。表示第一辆自行车的编号。
+//以下n - 1行，每行3个整数x, y, z。
+//z = 0时，表示编号为x的自行车恰停放在编号为y的自行车的左边
+//z = 1时，表示编号为x的自行车恰停放在编号为y的自行车的右边
+//输出格式
+//从左到右输出停车棚里的自行车编号
+//样例输入
+//4
+//3
+//1 3 1
+//2 1 0
+//5 2 1
+//样例输出
+//3 2 5 1
+//数据规模和约定
+//n <= 100000
+//自行车编号为不超过100000的正整数。
+
+#include <iostream>
+using namespace std;
+
+class bicycle
+{
+public:
+	int number;
+	bicycle* next;
+	bicycle* prev;
+
+	bicycle(int num = 0)
+	{
+		number = num;
+		next = NULL;
+		prev = NULL;
+	}
+};
+
+//找车
+bicycle* find(bicycle *cur, int num)
+{
+	cur = cur->next;
+	while (cur->number != num)
+	{
+		cur = cur->next;
+	}
+	return cur;
+}
+
+int main()
+{
+	int n;//多少辆车
+	int x;//第一辆车编号
+	cin >> n >> x;
+	
+	//先创建头结点和第一辆车；
+	bicycle *head = new bicycle;
+	bicycle *one = new bicycle(x);
+	head->next = one;
+	head->prev = one;
+	one->prev = head;
+	one->next = head;
+
+	int arr[3] = { 0 };//后面车的信息
+
+	//进一辆存一辆
+	for (int i = 0; i < n-1; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			cin >> arr[j];
+		}
+		bicycle* newOne = new bicycle(arr[0]);
+		one = find(head, arr[1]);
+		if (arr[2] == 0)//左边
+		{
+			newOne->next = one;
+			newOne->prev = one->prev;
+			one->prev->next = newOne;
+			one->prev = newOne;
+		}
+		else//右边
+		{
+			newOne->next = one->next;
+			newOne->prev = one;
+			one->next->prev = newOne;
+			one->next = newOne;
+		}
+	}
+
+	//打印
+	head = head->next;
+	for (int i = 0; i < n; i++)
+	{
+		cout << head->number<< " ";
+		head = head->next;
+	}
+
+	return 0;
+}
+
+
+#endif // 1
