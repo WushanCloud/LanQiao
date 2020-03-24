@@ -1,0 +1,45 @@
+问题描述
+　　给定n和len，输出n!末尾len位。
+输入格式
+　　一行两个正整数n和len。
+输出格式
+　　一行一个字符串，表示答案。长度不足用前置零补全。
+样例输入
+6 5
+样例输出
+00720
+数据规模和约定
+　　n<=30, len<=10。
+  
+  #include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+	int n, len;
+	cin >> n >> len;
+	long long ans = 1;
+	long long num = 0;
+	int k = 1;
+	while (k <= n)
+	{
+		ans *= k;
+		for (int i = 0; i < len; i++)
+		{
+			num = num*10 + ans % 10;
+			ans /= 10;
+		}
+		ans = 0;
+		for (int i = 0; i < len ; i++)
+		{
+			ans = ans * 10 + num % 10;
+			num /= 10;
+		}
+		k++;
+	}
+	cout << setfill('0');
+	cout << right << setw(len) << ans;
+
+	return 0;
+}
