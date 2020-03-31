@@ -1,0 +1,24 @@
+int main()
+{
+	int arr[5];
+	int num = 0;
+	int i;
+	while (num < 32)
+	{
+		int temp = num;
+		for (i = 4; i >= 0; i--)
+		{
+			arr[i] = num % 2;
+			num /= 2;
+		}
+		for (i = 0; i < 5; i++)
+		{
+			printf("%d", arr[i]);
+		}
+		printf("\n");
+		num = temp;
+		num++;
+	}
+	
+	return 0;
+}
