@@ -1,0 +1,80 @@
+//问题描述
+//我们知道，阶乘n!表示n * (n - 1)* (n - 2)*...... * 2 * 1, 类似的，可以定义多阶乘计算，例如：5！！ = 5 * 3 * 1, 
+//依次可以有n!...!(k个‘！’，可以简单表示为n(k)!) = n * (n - k) * (n - 2k) *....（直到最后一个数 <= 0）。
+//现给定一组数据n、k、m, 当m = 1时，计算并输出n(1)!+ n(2)!+ ...... + n(k)!的值，
+//m = 2时计算并输出n(1)!+ n(2)!+ ...... + n(k)!的各个位上的数字之和。
+//输入格式
+//两行，第一行为n和k，第二行为m。
+//输出格式
+//一行, 为n(1)!+ n(2)!+ ...... + n(k)!的值或n(1)!+ n(2)!+ ...... + n(k)!的各个位上的数字之和。
+//样例输入
+//5 1
+//2
+//样例输出
+//3
+//数据规模和约定
+//0 < k < n <= 20
+#include <iostream>
+using namespace std;
+
+//计算并输出n(1)!+ n(2)!+ ...... + n(k)!的值
+void sum1(int n, int k)
+{
+	long long sum = 0;
+	long long num = 1;
+	for (k; k > 0; k--)
+	{
+		for (int j = n; j > 0; j-=k)
+		{
+			num *= j;
+		}
+		sum += num;
+		num = 1;
+	}
+	cout << sum;
+}
+
+//计算并输出n(1)!+ n(2)!+ ...... + n(k)!的各个位上的数字之和
+void sum2(int n, int k)
+{
+	long long sum = 0;
+	long long num = 1;
+	for (k; k > 0; k--)
+	{
+		for (int j = n; j > 0; j -= k)
+		{
+			num *= j;
+		}
+		sum += num;
+		num = 1;
+	}
+	num = sum;
+	sum = 0;
+	while (num)
+	{
+		sum = sum + num % 10;
+		num /= 10;
+	}
+	cout << sum;
+}
+
+int main()
+{
+	int n, k;//n的k阶阶乘
+	int m;//选择
+	cin >> n >> k;
+	cin >> m;
+	switch (m)
+	{
+	case 1:
+		sum1(n,k);
+		break;
+	case 2:
+		sum2(n,k);
+		break;
+	default:
+		break;
+	}
+
+	return 0;
+}
