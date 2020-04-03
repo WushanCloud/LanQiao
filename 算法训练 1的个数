@@ -1,0 +1,51 @@
+问题描述
+　　输入正整数n，判断从1到n之中，数字1一共要出现几次。例如1123这个数，则出现了两次1。例如15，那么从1到15之中，一共出现了8个1。
+输入格式
+　　一个正整数n
+输出格式
+　　一个整数，表示1出现的资料
+样例输入
+15
+样例输出
+8
+数据规模和约定
+　　n不超过30000
+
+#include <iostream> 
+#include <iomanip>
+#include <cstring>
+#include <string>
+#include <vector>
+#include <cassert>
+#include <cmath>
+#include <algorithm>
+#include <fstream>
+#include <ostream>
+using namespace std;
+
+int oneSum(int n)
+{
+	int sum = 0;
+	while (n)
+	{
+		if (n%10 == 1)
+		{
+			sum++;
+		}
+		n /= 10;
+	}
+	return sum;
+}
+
+int main()
+{
+	size_t n;
+	cin >> n;
+	size_t sum = 0;
+	for (size_t i = 1; i <= n; i++)
+	{
+		sum += oneSum(i);
+	}
+	cout << sum;
+	return 0;
+}
