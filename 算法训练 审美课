@@ -1,0 +1,133 @@
+算法训练 审美课
+
+问题描述
+　　《审美的历程》课上有n位学生，帅老师展示了m幅画，其中有些是梵高的作品，另外的都出自五岁小朋友之手。老师请同学们分辨哪些画的作者是梵高，但是老师自己并没有答案，因为这些画看上去都像是小朋友画的……老师只想知道，有多少对同学给出的答案完全相反，这样他就可以用这个数据去揭穿披着皇帝新衣的抽象艺术了（支持帅老师^_^）。
+　　答案完全相反是指对每一幅画的判断都相反。
+输入格式
+　　第一行两个数n和m，表示学生数和图画数；
+　　接下来是一个n*m的01矩阵A：
+　　如果aij=0，表示学生i觉得第j幅画是小朋友画的；
+　　如果aij=1，表示学生i觉得第j幅画是梵高画的。
+输出格式
+　　输出一个数ans：表示有多少对同学的答案完全相反。
+样例输入
+3 2
+1 0
+0 1
+1 0
+样例输出
+2
+
+
+法一
+
+#include <iostream> 
+#include <iomanip>
+#include <cstring>
+#include <string>
+#include <vector>
+#include <cassert>
+#include <cmath>
+#include <algorithm>
+#include <fstream>
+#include <ostream>
+using namespace std;
+
+
+int main()
+{
+	int n, m;
+	cin >> n >> m;
+	string* arr = new string[n];
+	char c = 0;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			cin >> c;
+			arr[i] += c;
+		}
+	}
+	
+	int sum = 0;
+	for (int i = 0; i < n - 1; i++)
+	{
+		string cmp = "";
+		for (int k = 0; k < m; k++)
+		{
+			if (arr[i][k] == '0')
+			{
+				cmp += '1';
+			}
+			else
+			{
+				cmp += '0';
+			}
+		}
+		for (int k = i + 1; k < n; k++)
+		{
+			if (arr[k] == cmp)
+			{
+				sum++;
+			}
+		}
+	}
+	cout << sum;
+
+	return 0;
+}
+
+
+法二
+
+#include <iostream> 
+#include <iomanip>
+#include <cstring>
+#include <string>
+#include <vector>
+#include <cassert>
+#include <cmath>
+#include <algorithm>
+#include <fstream>
+#include <ostream>
+using namespace std;
+
+int main()
+{
+	int n, m;
+	cin >> n >> m;
+
+	int** arr = new int*[n];
+	for (int i = 0; i < n; i++)
+	{
+		arr[i] = new int[m];
+		for (int j = 0; j < m; j++)
+		{
+			cin >> arr[i][j];
+		}
+	}
+
+	int sum = 0;
+	
+	for (int i = 0; i < n-1; i++)
+	{	
+		for (int k = i+1; k < n; k++)
+		{
+			int flag = 1;
+			for (int j = 0; j < m; j++)
+			{
+				if (!(arr[i][j] ^ arr[k][j]))
+				{
+					flag = 0;
+					break;
+				}
+			}
+			if (flag)
+			{
+				sum++;
+			}
+		}
+	}
+	cout << sum;
+	return 0;
+}
