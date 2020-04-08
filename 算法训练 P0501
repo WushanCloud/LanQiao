@@ -1,0 +1,48 @@
+//输入两个无符号整数x, y, 用位操作实现无符号整数的乘法运算。不用考虑整数的溢出。
+//输入：
+//235 657
+//输出：
+//154395
+
+// 6*5
+// 0110*5
+// 5 10 20 
+// 0 10 20 
+#include <iostream> 
+#include <iomanip>
+#include <cstring>
+#include <string>
+#include <vector>
+#include <cassert>
+#include <cmath>
+#include <algorithm>
+#include <fstream>
+#include <ostream>
+
+using namespace std;
+//通过指针的偏移量的特性实现
+int ADD(int x, int y)
+{
+	//由于指针可以看成地址，所以可以将x转为地址形式通过指针的便宜来加上y
+	char* z = (char*)x;
+	return (int)(&(z[y]));  //z + sizeof(char)*y 等价于 x+y
+}
+int main()
+{
+	int m, n;
+	cin >> m >> n;
+	cout << ADD(m, n);
+	exit(0);
+	int ans = 0;
+	for (int i = 0; i < 32; i++)
+	{
+		if (m & 1)
+		{
+			ans = (ans ^ n) + ((ans & n) << 1);
+		}
+		n <<= 1;
+		m >>= 1;
+	}
+	cout << ans;
+	return 0;
+}
